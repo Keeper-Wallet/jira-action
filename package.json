@@ -7,7 +7,7 @@
     "lint:eslint": "eslint --max-warnings 0 .",
     "lint:typescript": "tsc --noEmit",
     "test": "vitest",
-    "build": "esbuild src/index.ts --bundle --minify --define:import.meta.vitest=undefined --sourcemap --legal-comments=external --platform=node --target=node16 --outfile=build/index.js"
+    "build": "esbuild src/index.ts --bundle --define:import.meta.vitest=undefined --legal-comments=external --platform=node --target=node16 --outfile=build/index.js"
   },
   "dependencies": {},
   "devDependencies": {
