@@ -22,8 +22,20 @@ jobs:
       new-release-published: ${{ steps.semantic-release.outputs.new-release-published }}
       new-release-version: ${{ steps.semantic-release.outputs.new-release-version }}
 
-  report:
+  report-merge:
     needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: styfle/cancel-workflow-action@0.11.0
+      - uses: actions/checkout@v3
+      - uses: ./
+        with:
+          hooks-url: ${{ secrets.HOOKS_URL }}
+          hook-merge: ${{ secrets.HOOK_MERGE }}
+          release-version: ${{ needs.release.outputs.new-release-version }}
+
+  report-release:
+    needs: [release, report-merge]
     if: needs.release.outputs.new-release-published == 'true'
     runs-on: ubuntu-latest
     steps:
