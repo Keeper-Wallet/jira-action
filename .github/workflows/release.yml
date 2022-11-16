@@ -12,6 +12,5 @@ jobs:
       - uses: ./
         with:
           component: Other
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           hooks-url: ${{ secrets.HOOKS_URL }}
           hook-release: ${{ secrets.HOOK_RELEASE }}
