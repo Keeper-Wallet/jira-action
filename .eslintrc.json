@@ -1,0 +1,8 @@
+{
+  "root": true,
+  "extends": [
+    "@faergeek",
+    "@faergeek/eslint-config/node",
+    "@faergeek/eslint-config/typescript"
+  ]
+}
