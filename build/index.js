@@ -19977,7 +19977,7 @@ async function run() {
     if (import_github.context.eventName !== "push") {
       throw new Error("Only running on push event is supported for now");
     }
-    let releaseVersion = (0, import_core.getInput)("release-version", { required: true });
+    let releaseVersion = (0, import_core.getInput)("release-version");
     let report;
     if (releaseVersion) {
       report = "release";
