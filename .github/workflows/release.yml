@@ -1,10 +1,31 @@
 name: Release
 on:
   push:
-    tags:
-      - v[0-9]+\.[0-9]+\.[0-9]+
+    branches:
+      - master
 jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: styfle/cancel-workflow-action@0.11.0
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version-file: .nvmrc
+      - run: yarn --frozen-lockfile
+      - run: yarn semantic-release
+        id: semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Actions-R-Us/actions-tagger@v2
+    outputs:
+      new-release-published: ${{ steps.semantic-release.outputs.new-release-published }}
+      new-release-version: ${{ steps.semantic-release.outputs.new-release-version }}
+
   report:
+    needs: release
+    if: needs.semantic-release.outputs.new-release-published == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: styfle/cancel-workflow-action@0.11.0
@@ -14,3 +35,4 @@ jobs:
           component: Other
           hooks-url: ${{ secrets.HOOKS_URL }}
           hook-release: ${{ secrets.HOOK_RELEASE }}
+          release-version: ${{ needs.semantic-release.outputs.new-release-version }}
