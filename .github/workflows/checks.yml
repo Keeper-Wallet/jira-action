@@ -18,3 +18,8 @@ jobs:
       - run: yarn run lint:eslint
       - run: yarn run lint:typescript
       - run: yarn test
+      - name: Check that build is not stale
+        run: |
+          md5sum build/* > md5.txt
+          yarn run build
+          md5sum -c md5.txt || (echo 'Forgot to run `yarn run build`?' && exit 1)

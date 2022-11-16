@@ -14,7 +14,6 @@ jobs:
           cache: yarn
           node-version-file: .nvmrc
       - run: yarn --frozen-lockfile
-      - run: yarn run build
       - run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
