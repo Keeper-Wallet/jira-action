@@ -34,5 +34,12 @@ if (import.meta.vitest) {
         "fixed something, don't care about jira tasks",
       ])
     ).toStrictEqual([]);
+
+    expect(
+      parseIssuesFromCommitMessages([
+        'fix(KEEP-647): fix some bug',
+        'fix(KEEP-647): trying to fix it again',
+      ])
+    ).toStrictEqual(['KEEP-647']);
   });
 }
