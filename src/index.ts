@@ -30,15 +30,28 @@ async function run() {
       throw new Error('Only running on push event is supported for now');
     }
 
-    if (!process.env.GITHUB_REF_NAME) {
-      throw new Error('Expected GITHUB_REF_NAME to be present');
+    let releaseVersion = getInput('release-version', { required: true });
+
+    let report: 'merge' | 'release';
+
+    if (releaseVersion) {
+      report = 'release';
+    } else if (process.env.GITHUB_REF_TYPE === 'tag') {
+      if (!process.env.GITHUB_REF_NAME) {
+        throw new Error('Expected GITHUB_REF_NAME to be present');
+      }
+
+      releaseVersion = process.env.GITHUB_REF_NAME;
+      report = 'release';
+    } else {
+      report = 'merge';
     }
 
     const hooksUrl = getInput('hooks-url', { required: true });
     const http = new HttpClient();
 
-    switch (process.env.GITHUB_REF_TYPE) {
-      case 'branch': {
+    switch (report) {
+      case 'merge': {
         const hookMerge = getInput('hook-merge', { required: true });
         const payload = context.payload as PushEvent;
 
@@ -49,11 +62,11 @@ async function run() {
         const body = JSON.stringify({ issues });
 
         // eslint-disable-next-line no-console
-        console.log(`Reporting merge of issues: ${issues.join(', ')}`);
+        console.log(`✅ Reporting issues as merged: ${issues.join(', ')}`);
         await http.post(url, body, headers);
         break;
       }
-      case 'tag': {
+      case 'release': {
         const component = getInput('component', { required: true });
         const hookRelease = getInput('hook-release', { required: true });
 
@@ -64,14 +77,18 @@ async function run() {
         });
 
         const issues = await getAllIssuesSince(tags.data[0].name);
-        const releaseVersion = process.env.GITHUB_REF_NAME;
 
         const url = `${hooksUrl}/${hookRelease}`;
         const headers = { 'Content-Type': 'application/json' };
         const body = JSON.stringify({ component, issues, releaseVersion });
 
         // eslint-disable-next-line no-console
-        console.log(`Reporting release of issues: ${issues.join(', ')}`);
+        console.log(
+          `🚀 Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
+            ', '
+          )}`
+        );
+
         await http.post(url, body, headers);
         break;
       }

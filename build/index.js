@@ -19977,24 +19977,34 @@ async function run() {
     if (import_github.context.eventName !== "push") {
       throw new Error("Only running on push event is supported for now");
     }
-    if (!process.env.GITHUB_REF_NAME) {
-      throw new Error("Expected GITHUB_REF_NAME to be present");
+    let releaseVersion = (0, import_core.getInput)("release-version", { required: true });
+    let report;
+    if (releaseVersion) {
+      report = "release";
+    } else if (process.env.GITHUB_REF_TYPE === "tag") {
+      if (!process.env.GITHUB_REF_NAME) {
+        throw new Error("Expected GITHUB_REF_NAME to be present");
+      }
+      releaseVersion = process.env.GITHUB_REF_NAME;
+      report = "release";
+    } else {
+      report = "merge";
     }
     const hooksUrl = (0, import_core.getInput)("hooks-url", { required: true });
     const http = new import_http_client.HttpClient();
-    switch (process.env.GITHUB_REF_TYPE) {
-      case "branch": {
+    switch (report) {
+      case "merge": {
         const hookMerge = (0, import_core.getInput)("hook-merge", { required: true });
         const payload = import_github.context.payload;
         const issues = await getAllIssuesSince(payload.before);
         const url = `${hooksUrl}/${hookMerge}`;
         const headers = { "Content-Type": "application/json" };
         const body = JSON.stringify({ issues });
-        console.log(`Reporting merge of issues: ${issues.join(", ")}`);
+        console.log(`\u2705 Reporting issues as merged: ${issues.join(", ")}`);
         await http.post(url, body, headers);
         break;
       }
-      case "tag": {
+      case "release": {
         const component = (0, import_core.getInput)("component", { required: true });
         const hookRelease = (0, import_core.getInput)("hook-release", { required: true });
         const tags = await octokit.rest.repos.listTags({
@@ -20003,11 +20013,14 @@ async function run() {
           per_page: 1
         });
         const issues = await getAllIssuesSince(tags.data[0].name);
-        const releaseVersion = process.env.GITHUB_REF_NAME;
         const url = `${hooksUrl}/${hookRelease}`;
         const headers = { "Content-Type": "application/json" };
         const body = JSON.stringify({ component, issues, releaseVersion });
-        console.log(`Reporting release of issues: ${issues.join(", ")}`);
+        console.log(
+          `\u{1F680} Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
+            ", "
+          )}`
+        );
         await http.post(url, body, headers);
         break;
       }

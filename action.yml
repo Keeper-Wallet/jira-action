@@ -14,6 +14,8 @@ inputs:
     description: HOOK_MERGE
   hook-release:
     description: HOOK_RELEASE
+  release-version:
+    description: explicit version to release instead of pushed tag
 runs:
   using: node16
   main: build/index.js
