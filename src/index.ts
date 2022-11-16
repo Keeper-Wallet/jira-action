@@ -30,7 +30,7 @@ async function run() {
       throw new Error('Only running on push event is supported for now');
     }
 
-    let releaseVersion = getInput('release-version', { required: true });
+    let releaseVersion = getInput('release-version');
 
     let report: 'merge' | 'release';
 
