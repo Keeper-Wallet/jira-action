@@ -20000,8 +20000,12 @@ async function run() {
         const url = `${hooksUrl}/${hookMerge}`;
         const headers = { "Content-Type": "application/json" };
         const body = JSON.stringify({ issues });
-        console.log(`\u2705 Reporting issues as merged: ${issues.join(", ")}`);
-        await http.post(url, body, headers);
+        if (issues.length === 0) {
+          console.log("No issues to report");
+        } else {
+          console.log(`\u2705 Reporting issues as merged: ${issues.join(", ")}`);
+          await http.post(url, body, headers);
+        }
         break;
       }
       case "release": {
@@ -20016,12 +20020,16 @@ async function run() {
         const url = `${hooksUrl}/${hookRelease}`;
         const headers = { "Content-Type": "application/json" };
         const body = JSON.stringify({ component, issues, releaseVersion });
-        console.log(
-          `\u{1F680} Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
-            ", "
-          )}`
-        );
-        await http.post(url, body, headers);
+        if (issues.length === 0) {
+          console.log("No issues to report");
+        } else {
+          console.log(
+            `\u{1F680} Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
+              ", "
+            )}`
+          );
+          await http.post(url, body, headers);
+        }
         break;
       }
       default:
