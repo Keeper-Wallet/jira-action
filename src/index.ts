@@ -61,9 +61,14 @@ async function run() {
         const headers = { 'Content-Type': 'application/json' };
         const body = JSON.stringify({ issues });
 
-        // eslint-disable-next-line no-console
-        console.log(`✅ Reporting issues as merged: ${issues.join(', ')}`);
-        await http.post(url, body, headers);
+        if (issues.length === 0) {
+          // eslint-disable-next-line no-console
+          console.log('No issues to report');
+        } else {
+          // eslint-disable-next-line no-console
+          console.log(`✅ Reporting issues as merged: ${issues.join(', ')}`);
+          await http.post(url, body, headers);
+        }
         break;
       }
       case 'release': {
@@ -82,14 +87,19 @@ async function run() {
         const headers = { 'Content-Type': 'application/json' };
         const body = JSON.stringify({ component, issues, releaseVersion });
 
-        // eslint-disable-next-line no-console
-        console.log(
-          `🚀 Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
-            ', '
-          )}`
-        );
+        if (issues.length === 0) {
+          // eslint-disable-next-line no-console
+          console.log('No issues to report');
+        } else {
+          // eslint-disable-next-line no-console
+          console.log(
+            `🚀 Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
+              ', '
+            )}`
+          );
 
-        await http.post(url, body, headers);
+          await http.post(url, body, headers);
+        }
         break;
       }
       default:
