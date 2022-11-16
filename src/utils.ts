@@ -3,13 +3,17 @@ import commitsParser from 'conventional-commits-parser';
 const ISSUE_RE = /^(KEEP-\d+)/;
 
 export function parseIssuesFromCommitMessages(commitMessages: string[]) {
-  return commitMessages
-    .map(message => {
-      const msg = commitsParser.sync(message);
+  return Array.from(
+    new Set(
+      commitMessages
+        .map(message => {
+          const msg = commitsParser.sync(message);
 
-      return (msg.scope ?? msg.header)?.match(ISSUE_RE)?.[1];
-    })
-    .filter((issue): issue is NonNullable<typeof issue> => issue != null);
+          return (msg.scope ?? msg.header)?.match(ISSUE_RE)?.[1];
+        })
+        .filter((issue): issue is NonNullable<typeof issue> => issue != null)
+    )
+  );
 }
 
 if (import.meta.vitest) {
