@@ -1,8 +1,5 @@
 name: Commitlint
-on:
-  pull_request:
-    paths-ignore:
-      - 'build/**'
+on: [pull_request]
 jobs:
   commitlint:
     runs-on: ubuntu-latest
