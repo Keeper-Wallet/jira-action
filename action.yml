@@ -5,6 +5,7 @@ inputs:
     description: Component
   github-token:
     description: GITHUB_TOKEN
+    default: ${{ github.token }}
     required: true
   hooks-url:
     description: HOOKS_URL
