@@ -17,6 +17,7 @@ jobs:
       - run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Actions-R-Us/actions-tagger@v2
 
   report:
     needs: release
