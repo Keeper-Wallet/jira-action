@@ -18,14 +18,6 @@ jobs:
         id: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set major version tag pointer
-        if: steps.semantic-release.outputs.new-release-published == 'true'
-        run: |
-          MAJOR=$(echo $RELEASE_VERSION | cut -d . -f 1)
-          git tag -f $MAJOR
-          git push origin $MAJOR --force
-        env:
-          RELEASE_VERSION: v${{ steps.semantic-release.outputs.new-release-version }}
     outputs:
       new-release-published: ${{ steps.semantic-release.outputs.new-release-published }}
       new-release-version: ${{ steps.semantic-release.outputs.new-release-version }}
@@ -54,3 +46,10 @@ jobs:
           hooks-url: ${{ secrets.HOOKS_URL }}
           hook-release: ${{ secrets.HOOK_RELEASE }}
           release-version: v${{ needs.release.outputs.new-release-version }}
+      - name: Set major version tag pointer
+        run: |
+          MAJOR=$(echo $RELEASE_VERSION | cut -d . -f 1)
+          git tag -f $MAJOR
+          git push origin $MAJOR --force
+        env:
+          RELEASE_VERSION: v${{ needs.release.outputs.new-release-version }}
