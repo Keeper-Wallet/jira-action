@@ -25,7 +25,7 @@ jobs:
           git tag -f $MAJOR
           git push origin $MAJOR --force
         env:
-          RELEASE_VERSION: ${{ steps.semantic-release.outputs.new-release-version }}
+          RELEASE_VERSION: v${{ steps.semantic-release.outputs.new-release-version }}
     outputs:
       new-release-published: ${{ steps.semantic-release.outputs.new-release-published }}
       new-release-version: ${{ steps.semantic-release.outputs.new-release-version }}
@@ -54,4 +54,4 @@ jobs:
           component: Other
           hooks-url: ${{ secrets.HOOKS_URL }}
           hook-release: ${{ secrets.HOOK_RELEASE }}
-          release-version: ${{ needs.release.outputs.new-release-version }}
+          release-version: v${{ needs.release.outputs.new-release-version }}
