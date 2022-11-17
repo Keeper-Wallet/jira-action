@@ -20003,7 +20003,7 @@ async function run() {
         if (issues.length === 0) {
           console.log("No issues to report");
         } else {
-          console.log(`\u2705 Reporting issues as merged: ${issues.join(", ")}`);
+          console.log(`Reporting issues as merged: ${issues.join(", ")}`);
           await http.post(url, body, headers);
         }
         break;
@@ -20024,7 +20024,7 @@ async function run() {
           console.log("No issues to report");
         } else {
           console.log(
-            `\u{1F680} Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
+            `Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
               ", "
             )}`
           );

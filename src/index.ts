@@ -66,7 +66,7 @@ async function run() {
           console.log('No issues to report');
         } else {
           // eslint-disable-next-line no-console
-          console.log(`✅ Reporting issues as merged: ${issues.join(', ')}`);
+          console.log(`Reporting issues as merged: ${issues.join(', ')}`);
           await http.post(url, body, headers);
         }
         break;
@@ -93,7 +93,7 @@ async function run() {
         } else {
           // eslint-disable-next-line no-console
           console.log(
-            `🚀 Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
+            `Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
               ', '
             )}`
           );
