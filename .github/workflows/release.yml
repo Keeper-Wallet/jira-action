@@ -40,7 +40,6 @@ jobs:
         with:
           hooks-url: ${{ secrets.HOOKS_URL }}
           hook-merge: ${{ secrets.HOOK_MERGE }}
-          release-version: ${{ needs.release.outputs.new-release-version }}
 
   report-release:
     needs: [release, report-merge]
