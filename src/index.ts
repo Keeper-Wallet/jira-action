@@ -24,10 +24,12 @@ async function getAllIssuesSince(base: string) {
   return parseIssuesFromCommitMessages(commitMessages);
 }
 
+const ALLOWED_EVENTS = ['push', 'release'];
+
 async function run() {
   try {
-    if (context.eventName !== 'push') {
-      throw new Error('Only running on push event is supported for now');
+    if (!ALLOWED_EVENTS.includes(context.eventName)) {
+      throw new Error(`Unexpected event: "${context.eventName}"`);
     }
 
     let releaseVersion = getInput('release-version');

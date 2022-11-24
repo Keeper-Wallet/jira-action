@@ -19972,10 +19972,11 @@ async function getAllIssuesSince(base) {
   );
   return parseIssuesFromCommitMessages(commitMessages);
 }
+var ALLOWED_EVENTS = ["push", "release"];
 async function run() {
   try {
-    if (import_github.context.eventName !== "push") {
-      throw new Error("Only running on push event is supported for now");
+    if (!ALLOWED_EVENTS.includes(import_github.context.eventName)) {
+      throw new Error(`Unexpected event: "${import_github.context.eventName}"`);
     }
     let releaseVersion = (0, import_core.getInput)("release-version");
     let report;
