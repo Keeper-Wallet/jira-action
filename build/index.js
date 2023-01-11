@@ -977,7 +977,7 @@ var require_lib = __commonJS({
       }
     };
     exports.HttpClientError = HttpClientError;
-    var HttpClientResponse = class {
+    var HttpClientResponse2 = class {
       constructor(message) {
         this.message = message;
       }
@@ -995,7 +995,7 @@ var require_lib = __commonJS({
         });
       }
     };
-    exports.HttpClientResponse = HttpClientResponse;
+    exports.HttpClientResponse = HttpClientResponse2;
     function isHttps(requestUrl) {
       const parsedUrl = new URL(requestUrl);
       return parsedUrl.protocol === "https:";
@@ -1233,7 +1233,7 @@ var require_lib = __commonJS({
           }
         }
         const req = info.httpModule.request(info.options, (msg) => {
-          const res = new HttpClientResponse(msg);
+          const res = new HttpClientResponse2(msg);
           handleResult(void 0, res);
         });
         let socket;
@@ -20284,6 +20284,12 @@ async function getAllIssuesSince(base) {
   );
   return parseIssuesFromCommitMessages(commitMessages);
 }
+function handleHttpErrors(response) {
+  const { statusCode, statusMessage } = response.message;
+  if (statusCode == null || statusCode < 200 || statusCode >= 400) {
+    throw new Error(`${statusCode}: ${statusMessage}`);
+  }
+}
 var ALLOWED_EVENTS = ["push", "release"];
 async function run() {
   try {
@@ -20317,7 +20323,7 @@ async function run() {
           console.log("No issues to report");
         } else {
           console.log(`Reporting issues as merged: ${issues.join(", ")}`);
-          await http.post(url, body, headers);
+          handleHttpErrors(await http.post(url, body, headers));
         }
         break;
       }
@@ -20341,7 +20347,7 @@ async function run() {
               ", "
             )}`
           );
-          await http.post(url, body, headers);
+          handleHttpErrors(await http.post(url, body, headers));
         }
         break;
       }
