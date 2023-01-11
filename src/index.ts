@@ -1,6 +1,6 @@
 import { getInput, setFailed } from '@actions/core';
 import { context, getOctokit } from '@actions/github';
-import { HttpClient } from '@actions/http-client';
+import { HttpClient, HttpClientResponse } from '@actions/http-client';
 import { PushEvent } from '@octokit/webhooks-definitions/schema';
 
 import { parseIssuesFromCommitMessages } from './utils';
@@ -22,6 +22,14 @@ async function getAllIssuesSince(base: string) {
   );
 
   return parseIssuesFromCommitMessages(commitMessages);
+}
+
+function handleHttpErrors(response: HttpClientResponse) {
+  const { statusCode, statusMessage } = response.message;
+
+  if (statusCode == null || statusCode < 200 || statusCode >= 400) {
+    throw new Error(`${statusCode}: ${statusMessage}`);
+  }
 }
 
 const ALLOWED_EVENTS = ['push', 'release'];
@@ -69,7 +77,7 @@ async function run() {
         } else {
           // eslint-disable-next-line no-console
           console.log(`Reporting issues as merged: ${issues.join(', ')}`);
-          await http.post(url, body, headers);
+          handleHttpErrors(await http.post(url, body, headers));
         }
         break;
       }
@@ -100,7 +108,7 @@ async function run() {
             )}`
           );
 
-          await http.post(url, body, headers);
+          handleHttpErrors(await http.post(url, body, headers));
         }
         break;
       }
