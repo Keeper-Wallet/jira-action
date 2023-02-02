@@ -9344,7 +9344,9 @@ var require_lib4 = __commonJS({
           if (signal && signal.aborted) {
             return;
           }
-          destroyStream(response.body, err);
+          if (response && response.body) {
+            destroyStream(response.body, err);
+          }
         });
         if (parseInt(process.version.substring(1)) < 14) {
           req.on("socket", function(s) {
