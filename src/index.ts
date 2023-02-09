@@ -1,7 +1,7 @@
 import { getInput, setFailed } from '@actions/core';
 import { context, getOctokit } from '@actions/github';
-import { HttpClient, HttpClientResponse } from '@actions/http-client';
-import { PushEvent } from '@octokit/webhooks-definitions/schema';
+import { HttpClient, type HttpClientResponse } from '@actions/http-client';
+import { type PushEvent } from '@octokit/webhooks-definitions/schema';
 
 import { parseIssuesFromCommitMessages } from './utils';
 
