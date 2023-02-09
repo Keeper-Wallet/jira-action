@@ -977,7 +977,7 @@ var require_lib = __commonJS({
       }
     };
     exports.HttpClientError = HttpClientError;
-    var HttpClientResponse2 = class {
+    var HttpClientResponse = class {
       constructor(message) {
         this.message = message;
       }
@@ -995,7 +995,7 @@ var require_lib = __commonJS({
         });
       }
     };
-    exports.HttpClientResponse = HttpClientResponse2;
+    exports.HttpClientResponse = HttpClientResponse;
     function isHttps(requestUrl) {
       const parsedUrl = new URL(requestUrl);
       return parsedUrl.protocol === "https:";
@@ -1233,7 +1233,7 @@ var require_lib = __commonJS({
           }
         }
         const req = info.httpModule.request(info.options, (msg) => {
-          const res = new HttpClientResponse2(msg);
+          const res = new HttpClientResponse(msg);
           handleResult(void 0, res);
         });
         let socket;
