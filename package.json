@@ -20,7 +20,7 @@
     "@octokit/webhooks-definitions": "^3.67.3",
     "@types/conventional-commits-parser": "^3.0.2",
     "@types/node": "^18.0.0",
-    "conventional-commits-parser": "^3.2.4",
+    "conventional-commits-parser": "^4.0.0",
     "esbuild": "^0.17.0",
     "eslint": "^8.27.0",
     "prettier": "^2.7.1",
