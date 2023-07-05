@@ -11,8 +11,8 @@ export function parseIssuesFromCommitMessages(commitMessages: string[]) {
 
           return (msg.scope ?? msg.header)?.match(ISSUE_RE)?.[1];
         })
-        .filter((issue): issue is NonNullable<typeof issue> => issue != null)
-    )
+        .filter((issue): issue is NonNullable<typeof issue> => issue != null),
+    ),
   );
 }
 
@@ -30,20 +30,20 @@ if (import.meta.vitest) {
         'chore(KEEP-243): update readme',
         'anything(KEEP-22): update readme',
         'KEEP-5793: one more bug is fixed',
-      ])
+      ]),
     ).toStrictEqual(['KEEP-1', 'KEEP-647', 'KEEP-243', 'KEEP-22', 'KEEP-5793']);
 
     expect(
       parseIssuesFromCommitMessages([
         "fixed something, don't care about jira tasks",
-      ])
+      ]),
     ).toStrictEqual([]);
 
     expect(
       parseIssuesFromCommitMessages([
         'fix(KEEP-647): fix some bug',
         'fix(KEEP-647): trying to fix it again',
-      ])
+      ]),
     ).toStrictEqual(['KEEP-647']);
   });
 }

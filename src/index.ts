@@ -18,7 +18,7 @@ async function getAllIssuesSince(base: string) {
       per_page: 100,
       repo,
     },
-    response => response.data.commits.map(({ commit }) => commit.message)
+    response => response.data.commits.map(({ commit }) => commit.message),
   );
 
   return parseIssuesFromCommitMessages(commitMessages);
@@ -104,8 +104,8 @@ async function run() {
           // eslint-disable-next-line no-console
           console.log(
             `Reporting issues as released in ${component} ${releaseVersion}: ${issues.join(
-              ', '
-            )}`
+              ', ',
+            )}`,
           );
 
           handleHttpErrors(await http.post(url, body, headers));
@@ -114,7 +114,7 @@ async function run() {
       }
       default:
         throw new Error(
-          `Unexpted value of GITHUB_REF_TYPE: ${process.env.GITHUB_REF_TYPE}`
+          `Unexpted value of GITHUB_REF_TYPE: ${process.env.GITHUB_REF_TYPE}`,
         );
     }
   } catch (error) {
