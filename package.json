@@ -23,7 +23,7 @@
     "conventional-commits-parser": "^4.0.0",
     "esbuild": "^0.18.0",
     "eslint": "^8.27.0",
-    "prettier": "^2.7.1",
+    "prettier": "^3.0.0",
     "semantic-release": "^21.0.0",
     "semantic-release-export-data": "^1.0.1",
     "typescript": "^5.0.0",
