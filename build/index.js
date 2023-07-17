@@ -9634,9 +9634,9 @@ var require_once = __commonJS({
   }
 });
 
-// node_modules/@octokit/request-error/dist-node/index.js
+// node_modules/@octokit/request/node_modules/@octokit/request-error/dist-node/index.js
 var require_dist_node4 = __commonJS({
-  "node_modules/@octokit/request-error/dist-node/index.js"(exports) {
+  "node_modules/@octokit/request/node_modules/@octokit/request-error/dist-node/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function _interopDefault(ex) {
